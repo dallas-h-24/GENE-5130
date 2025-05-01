@@ -319,7 +319,7 @@ relevel(dds75$state, ref='Healthy')
 ```{r}
 dds_norm <- vst(dds75)    ### This applies the normalization without running the whole DESEQ2 function
 
-norm_gene_exp <- ### WGCNA needs the data in a particular shape, make sure this matches it
+norm_gene_exp <- t(assay(dds_norm)) ### WGCNA needs the data in a particular shape, make sure this matches it
 
 ```
 
@@ -393,7 +393,7 @@ sft <- pickSoftThreshold(norm_gene_exp,
 ```
 
 You can acess the results with sft\$fitIndices. We are going to pick a
-power that gives us the higherst R2 and the lowest mean K.
+power that gives us the higherst R2 and the lowest mean K (K=degrees).
 
 **HINT plot the data!** First plot Power vs r2
 
@@ -405,6 +405,7 @@ Then Plot Power vs mean.k
 
 ```{r}
 ### Follow the example above and plot meanK 
+ggplot(data = sft$fitIndices, aes(x = Power, y = mean.k.)) + geom_point()
 ```
 
 After you pick up a threshold we are ready to run our data analysis
