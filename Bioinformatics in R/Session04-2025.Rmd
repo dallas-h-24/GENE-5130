@@ -289,7 +289,7 @@ new_pheno <-  ### rename headers
 
 ```{r}
 ### RunDeseq2
-library(DESeq2)
+#library(DESeq2)
 dds <- DESeqDataSetFromMatrix()
 ```
 
@@ -410,6 +410,8 @@ ggplot(data = sft$fitIndices, aes(x = Power, y = mean.k.)) + geom_point()
 
 After you pick up a threshold we are ready to run our data analysis
 
+-   power = 15
+
 While it runs take a look at the vignette
 (<https://www.rdocumentation.org/packages/WGCNA/versions/1.69/topics/blockwiseModules>)
 to learn about the parameters
@@ -424,7 +426,7 @@ norm_gene_exp[] <- sapply(norm_gene_exp, as.numeric)
 bwm <- blockwiseModules(norm_gene_exp, 
                  maxBlockSize = 40000,
                  TOMType = "signed",
-                 power = 7, 
+                 power = 15, 
                  mergeCutHeight = 0.2, 
                  numericLabels = FALSE, 
                  randomSeed = 1234, 
@@ -474,11 +476,12 @@ traits <- new_pheno %>%
 
 ```{r}
 traits <- new_pheno %>%
-
+  mutate(disease_state_bin = ifelse(grepl('COVID', disease_state), 1, 0)) %>%
+  mutate 
 ```
 
 ```{r}
-correlations = cor()
+correlations = cor(bwm$MEs, traits, use= 'p')
 ```
 
 ```{r}
